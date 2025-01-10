@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Drive Files</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">My Drive App</a>
+            <div class="navbar-nav ms-auto">
+                {% if session.get('email') %}
+                    <span class="nav-link text-light">{{ session.get('email') }}</span>
+                    <a class="nav-link" href="/logout">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        {% if session.get('email') %}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Your Google Drive Files</h2>
+                <div>
+                    <button class="btn btn-primary" onclick="window.location.reload()">Refresh Files</button>
+                </div>
+            </div>
+            
+            {% if files %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Last Modified</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in files %}
+                            <tr>
+                                <td>{{ file.name }}</td>
+                                <td>
+                                    {% if 'folder' in file.mimeType %}
+                                        📁 Folder
+                                    {% else %}
+                                        📄 {{ file.mimeType.split('/')[-1] }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ file.modifiedTime.split('T')[0] }}</td>
+                                <td>
+                                    {% if file.size %}
+                                        {{ (file.size|int / 1024)|round(1) }} KB
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="https://drive.google.com/file/d/{{ file.id }}/view" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    No files found in your Google Drive.
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-warning">
+                Please <a href="/login">login</a> to view your Google Drive files.
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

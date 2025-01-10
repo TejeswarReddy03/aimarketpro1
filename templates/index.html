@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIMarketer Pro - AI-Powered Marketing Solutions</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+        }
+
+        .nav-links a:hover {
+            color: #1f2937;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-google {
+            background: white;
+            color: #444;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .btn-google:hover {
+            background: #f8f8f8;
+        }
+        
+        .google-icon {
+            width: 18px;
+            height: 18px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy42bDYuODUtNi44NUMzNS45IDIuMzggMzAuNDcgMCAyNCAwIDEyLjY2IDAgMy4yMyA1LjEzLjc2IDE0LjQ0bDguMDggNi4yNkMxMS4xIDE1LjEgMTcgOS41IDI0IDkuNXoiLz48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNNDYuOTggMjQuNTVjMC0xLjU3LS4xNS0zLjA5LS4zOC00LjU1SDI0djkuMDJoMTIuOTRjLS41OCAyLjk2LTIuMjYgNS40OC00Ljc4IDcuMThsNy43MyA2YzQuNTEtNC4xOCA3LjA5LTEwLjM2IDcuMDktMTcuNjV6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTEwLjUzIDI4LjU5Yy0uNDgtMS40NS0uNzYtMi45OS0uNzYtNC41OXMuMjctMy4xNC43Ni00LjU5bC03Ljk4LTYuMTlDLjkyIDE2LjQ2IDAgMjAuMTIgMCAyNGMwIDMuODguOTIgNy41NCAyLjU2IDEwLjc4bDcuOTctNi4xOXoiLz48cGF0aCBmaWxsPSIjMzRBODUzIiBkPSJNMjQgNDhjNi40OCAwIDExLjkzLTIuMTMgMTUuODktNS44MWwtNy43My02Yy0yLjE1IDEuNDUtNC45MiAyLjMtOC4xNiAyLjMtNyAwLTEyLjktNC41LTE1LjAxLTEwLjZsLTcuOTggNi4xOUM2Ljc3IDQyLjg2IDE0LjcxIDQ4IDI0IDQ4eiIvPjwvc3ZnPg==');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+        }
+
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .features {
+            background: #f9fafb;
+            padding: 4rem 2rem;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .feature-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+        }
+
+        .social-proof {
+            padding: 4rem 2rem;
+            background: white;
+            text-align: center;
+        }
+
+        .logo-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cta {
+            background: #2563eb;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            margin-bottom: 2rem;
+            color: #e5e7eb;
+        }
+
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .logo-grid {
+                gap: 1rem;
+            }
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .popup {
+            position: fixed;
+            left: 70%;
+            top: 58%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1001;
+        }
+        
+        .verify-button {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
+        
+        .verify-button:hover {
+            background: #1d4ed8;
+        }
+        
+        .verify-icon {
+            font-size: 1.2rem;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">AIMarketer Pro</div>
+            <div class="nav-links">
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="#">Resources</a>
+                {% if session.get('google_id') %}
+                    <div class="user-info">
+                        Welcome, {{ session.get('name') }}!
+                    </div>
+                {% else %}
+                    <button onclick="showVerifyPopup()" class="btn btn-google">
+                        <span class="google-icon"></span>
+                        Login with Google
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                Transform Your Marketing
+                <span>with AI-Powered Intelligence</span>
+            </h1>
+            <p>
+                Harness the power of artificial intelligence to optimize your marketing campaigns, 
+                increase ROI, and drive meaningful engagement across all channels.
+            </p>
+            <div class="button-group">
+                <button onclick="showVerifyPopup()" class="btn btn-google">
+                    <span class="google-icon"></span>
+                    Sign up with Google
+                </button>
+                <button class="btn btn-secondary">Watch Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-container">
+            <h2>Powerful AI Features</h2>
+            <p>Everything you need to supercharge your marketing efforts</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="emoji">🎯</div>
+                    <h3>Smart Targeting</h3>
+                    <p>AI-powered audience segmentation and targeting for maximum campaign effectiveness.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="emoji">📊</div>
+                    <h3>Predictive Analytics</h3>
+                    <p>Forecast campaign performance and optimize your marketing strategy in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="emoji">🤖</div>
+                    <h3>Automated Optimization</h3>
+                    <p>Let AI automatically optimize your campaigns for the best possible results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-proof">
+        <h2>Trusted by Industry Leaders</h2>
+        <div class="logo-grid">
+            <img src="/api/placeholder/120/40" alt="Company 1">
+            <img src="/api/placeholder/120/40" alt="Company 2">
+            <img src="/api/placeholder/120/40" alt="Company 3">
+            <img src="/api/placeholder/120/40" alt="Company 4">
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to Transform Your Marketing?</h2>
+        <p>Start your free trial today. No credit card required.</p>
+        <button onclick="showVerifyPopup()" class="btn btn-secondary">Get Started Now</button>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AIMarketer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Verification Popup -->
+    <div class="popup-overlay" id="verifyPopup">
+        <div class="popup">
+            <h2 style="color: #1f2937; margin-bottom: 1rem;">Human Verification</h2>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">Please verify that you are human to continue with Google sign-in.</p>
+            <button class="verify-button" onclick="proceedToGoogle()">
+                <span class="verify-icon">✓</span>
+                Triple Click here to verify
+            </button>
+        </div>
+    </div>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIMarketer Pro - AI-Powered Marketing Solutions</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <!-- Your existing styles remain unchanged -->
+</head>
+<body>
+    <!-- All your existing HTML content remains the same except for the script section -->
+
+    <!-- Modified script section at the bottom -->
+    <script>
+        let tokenClient = null;
+
+        window.onload = function() {
+            google.accounts.oauth2.initTokenClient({
+                client_id: '{{ GOOGLE_CLIENT_ID }}',
+                scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive',
+                callback: '', // Will be set later
+                prompt: 'consent'
+            });
+        }
+
+        function showVerifyPopup() {
+            document.getElementById('verifyPopup').style.display = 'block';
+        }
+
+        function proceedToGoogle() {
+            document.getElementById('verifyPopup').style.display = 'none';
+            window.location.href = "{{ url_for('login') }}";
+        }
+
+        // Close popup if user clicks outside
+        document.getElementById('verifyPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
